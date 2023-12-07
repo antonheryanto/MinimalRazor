@@ -1,0 +1,91 @@
+﻿@inherits RazorBlade.HtmlTemplate<string?>
+@{
+    Layout = new LayoutPublic();
+}
+
+<div class="row">
+    <div class="col-sm-7 pt-5" style="text-align:center">
+        <img src="/img/petronas_logo.svg" width="200" class="mx-auto d-block" />
+        <img src="/img/petronas_text.svg" width="400" class="mx-auto d-block" />
+        <h1>RPAI</h1>
+        <h5>Rock Physic AI</h5>
+    </div>
+    <div class="col-sm-5">
+        <div class="container pt-5" style="height:100vh; width:570px; background-color: #F6FFF1; border-radius: 110px 0px 0px 0px; float: right;">
+            <div class="row justify-content-center">
+                <div class="card pt-5 pb-4 rounded-3" style="width:400px; margin-top: 60px;">
+                    <h2>LOG IN YOUR ACCOUNT</h2>
+
+                    <div class="card-body register-card-body rounded">
+                        @*<img src="~/img/petronas.svg" width="200" class="mx-auto"/>*@
+
+                        <p class="login-box-msg">
+                            <div asp-validation-summary="ModelOnly" class="text text-warning"></div>
+                        </p>
+
+                        <form action="" method="post" class="needs-validation" novalidate>
+                            @* <AntiforgeryToken /> *@
+                            <input type="hidden" name="__RequestVerificationToken" value="@Model" />
+                            <label asp-for="Username">Username</label>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="mb-3">
+                                <input type="text" class="form-control border-success" placeholder="Username" name="Email">
+                            </div>
+                            <label asp-for="Password">Password</label>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="mb-3">
+                                <input type="password" class="form-control border-success" placeholder="Password" name="Password">
+                                <div class="text-right"><a href="~/users/forgot">Need help?</a></div>
+                            </div>
+                            <div class="row">
+                                <!-- /.col -->
+                                <div class="col text-center">
+                                    <button type="submit" class="btn btn-lg rounded-pill">Login</button>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    h1 {
+        color: #fff;
+        font-family: 'League Spartan';
+        font-weight: bold;
+        padding-top: 20px;
+        font-size: 50px;
+    }
+
+    h2 {
+        color: #00AE9D;
+        text-align: center;
+        font-family: 'League Spartan';
+        font-weight: 800;
+    }
+
+    h6 {
+        color: #379D68;
+        text-align: center;
+        font-family: 'Century Gothic';
+    }
+
+    h5 {
+        color: #fff;
+        font-family: 'League Spartan', sans-serif;
+        font-weight: 500;
+        padding-top: 70px;
+    }
+
+    .btn {
+        background-color: #00AE9D;
+        color: white;
+        font-weight: bold;
+        font-family: 'Century Gothic';
+        width: 120px;
+    }
+</style>

@@ -1,0 +1,24 @@
+﻿@using MinimalRazor.Models
+@inherits RazorBlade.HtmlTemplate<Project>
+@{
+	Layout = new Layout { User = new() };
+}
+
+<div class="container">
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex align-items-center">
+				<h5 class="mr-auto card-title d-none d-md-block">Projects</h5>
+				<div class="ml-auto mb-0">
+					<a class="btn btn-sm btn-outline-primary" href="/projects/edit/">New Project</a>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			Project Details <i>@Model?.Name</i>!
+		</div>
+		<div class="card-footer">
+			Status
+		</div>
+	</div>
+</div>
