@@ -1,7 +1,7 @@
 ﻿@using MinimalRazor.Models
 @inherits RazorBlade.HtmlTemplate<Project>
 @{
-	Layout = new Layout { User = new() };
+	Layout = new Layout { User = Context.User };
 }
 
 <div class="container">
@@ -22,3 +22,7 @@
 		</div>
 	</div>
 </div>
+
+@functions {
+	public HttpContext? Context { get; set; }
+}

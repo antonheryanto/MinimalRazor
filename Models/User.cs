@@ -53,8 +53,8 @@ public static class UserExtensions
 
     public static int GetId(this IPrincipal? user) => int.TryParse(user?.Identity?.Name, out int id) ? id : 0;
 
-    public static string? GetName(this ClaimsPrincipal? user)
-        => user?.FindFirst(ClaimTypes.GivenName)?.Value;
+    public static string GetName(this ClaimsPrincipal? user)
+        => user?.FindFirst(ClaimTypes.GivenName)?.Value ?? "Anonymous User";
     public static string? GetEmail(this ClaimsPrincipal? user)
         => user?.FindFirst(ClaimTypes.Email)?.Value;
     public static string? GetPhone(this ClaimsPrincipal? user)

@@ -38,12 +38,12 @@ app.UseAntiforgery();
 app.MapGet("/", async (SqliteConnection cn, HttpContext context) => {
     var items = await cn.QueryAsync<Project>("select * from projects");
     var user = context?.User?.Identity?.Name ?? "Anonymous";
-    var tx = new ProjectIndex(items.ToList());
+    var tx = new ProjectIndex(items.ToList()) { Context = context };
     return Results.Content(tx.Render(), "text/html");
 }).RequireAuthorization();
-app.MapGet("/projects/edit", async (SqliteConnection cn) => {
+app.MapGet("/projects/edit", async (SqliteConnection cn, HttpContext context) => {
     var m = await cn.QueryFirstAsync<Project>("select * from projects where id=@id", new { id = 1 });
-    var tx = new ProjectDetails(m);
+    var tx = new ProjectDetails(m) { Context = context };
     return Results.Content(tx.Render(), "text/html");
 });
 app.MapGet("/users/auth", (HttpContext context, IAntiforgery antiforgery) => {
@@ -51,11 +51,12 @@ app.MapGet("/users/auth", (HttpContext context, IAntiforgery antiforgery) => {
     return Results.Content(new UserAuth(token.RequestToken).Render(), "text/html");
 });
 app.MapPost("/users/auth", async (SqliteConnection cn, IAntiforgery antiforgery, HttpContext context,
-    [FromForm] string email, [FromQuery] string? returnUrl) =>
+    [FromForm] string email, [FromForm] string password, [FromQuery] string? returnUrl) =>
 {
     var m = await cn.QueryFirstAsync<User>("select * from users where email=@email", new { email });
-    if (m is not null)
+    if (m is not null && m.Password == password.Encrypt(m.Salt).Password)
     {
+	    m.Roles = (await cn.QueryAsync<Role>("select r.* from roleuser ru left join roles r ON r.id=ru.rolesid where ru.usersid=@Id", new { m.Id })).ToList();
         await context.SignInAsync(authScheme, new(new ClaimsIdentity(m.ToClaims(), authScheme)), new() { ExpiresUtc = DateTime.UtcNow.AddDays(1) });
         return Results.Redirect($"{returnUrl ?? "/"}");
     }
@@ -68,6 +69,7 @@ app.MapGet("/users/logout", (HttpContext context) =>
     return Results.Redirect("/");
 });
 app.Run();
+
 [JsonSerializable(typeof(User[]))]
 [JsonSerializable(typeof(Project[]))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext;
