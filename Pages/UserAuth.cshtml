@@ -1,4 +1,5 @@
-﻿@inherits RazorBlade.HtmlTemplate<string?>
+﻿@using Microsoft.AspNetCore.Antiforgery;
+@inherits RazorBlade.HtmlTemplate<AntiforgeryTokenSet>
 @{
     Layout = new LayoutPublic();
 }
@@ -25,7 +26,7 @@
 
                         <form action="" method="post" class="needs-validation" novalidate>
                             @* <AntiforgeryToken /> *@
-                            <input type="hidden" name="__RequestVerificationToken" value="@Model" />
+                            <input type="hidden" name="@Model.FormFieldName" value="@Model.RequestToken" />
                             <label asp-for="Username">Username</label>
                             <span asp-validation-for="Password" class="text-danger"></span>
                             <div class="mb-3">

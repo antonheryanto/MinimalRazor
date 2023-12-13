@@ -1,9 +1,8 @@
 ﻿@using MinimalRazor.Models
-@inherits RazorBlade.HtmlTemplate<Project>
+@inherits ViewTemplate<Project>
 @{
-	Layout = new Layout { User = Context.User };
+	Layout = LayoutMain;
 }
-
 <div class="container">
 	<div class="card">
 		<div class="card-header">
@@ -15,14 +14,10 @@
 			</div>
 		</div>
 		<div class="card-body">
-			Project Details <i>@Model?.Name</i>!
+			Project Details <i>@Model?.Name</i>! 
 		</div>
 		<div class="card-footer">
 			Status
 		</div>
 	</div>
 </div>
-
-@functions {
-	public HttpContext? Context { get; set; }
-}
